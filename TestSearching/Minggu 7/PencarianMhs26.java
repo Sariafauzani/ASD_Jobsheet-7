@@ -1,71 +1,73 @@
-public class PencarianMhs26 {
+import java.util.Scanner;
 
-    Mahasiswa26 listMHs[];
+public class PencarianMhs26 {
+    Mahasiswa26 listMhs[];
     int idx;
+
     public PencarianMhs26(int jumMhs) {
-        listMHs = new Mahasiswa26[jumMhs];
+        listMhs = new Mahasiswa26[jumMhs];
         idx = 0;
     }
 
-    public void tambah(Mahasiswa26 m) {
-        if (idx < listMHs.length) {
-            listMHs[idx] = m;
+    void tambah(Mahasiswa26 m) {
+        if (idx < listMhs.length) {
+            listMhs[idx] = m;
             idx++;
         } else {
-            System.out.println("Data sudah penuh!!");
+            System.out.println("Data sudah penuh !!");
         }
     }
 
     void tampil() {
-        for (Mahasiswa26 m : listMHs) {
-            m.tampil();
-            System.out.println("---------------------------------");
-        }
-    }
-
-    public int FindSeqSearch(int cari) {
-        int posisi = -1;
-        for (int j = 0; j < listMHs.length; j++) {
-            if (listMHs[j].nim == cari){
-                posisi = j;
-                break;
+        for (Mahasiswa26 m : listMhs) {
+            if (m != null) {
+                m.tampil();
+                System.out.println("--------------------");
             }
         }
-        return posisi;
     }
-
-    public int FindBinarySearch(int cari, int left, int right){
+    //modif
+    public int findBinarySearchByName(String nama, int left, int right) {
         int mid;
-        if (right >= left){
-            mid = (left + right) / 2;
-            if (cari == listMHs[mid].nim){
-                return (mid);
-            } else if (listMHs[mid].nim < cari){ //mengubah tanda > menjadi <
-                return FindBinarySearch(cari, left, mid - 1);
+        if (right >= left) {
+            mid = left + (right - left) / 2;
+            if (listMhs[mid] != null && listMhs[mid].nama.equalsIgnoreCase(nama)) {
+                return mid;
+            } else if (listMhs[mid] != null && listMhs[mid].nama.compareToIgnoreCase(nama) > 0) {
+                return findBinarySearchByName(nama, left, mid - 1);
             } else {
-                return FindBinarySearch(cari, mid + 1, right);
+                return findBinarySearchByName(nama, mid + 1, right);
             }
         }
         return -1;
     }
-    
-
-    public void Tampilposisi(int x, int pos){
-        if (pos!= -1){
-            System.out.println("data : "+ x +"ditemukan pada indeks "+ pos);
+    //modif
+    public void searchAndPrint(String nama) {
+        int left = 0;
+        int right = idx - 1;
+        int pos = findBinarySearchByName(nama, left, right);
+        if (pos != -1) {
+            System.out.println("Data ditemukan pada indeks " + pos);
+            System.out.println("Detail Mahasiswa:");
+            listMhs[pos].tampil();
         } else {
-            System.out.println("data "+ x +"tidak ditemukan");
+            System.out.println("Data tidak ditemukan");
         }
     }
-
-    public void TampilData(int x, int pos){
-        if (pos!= -1){
-            System.out.println("Nim\t : "+ x);
-            System.out.println("Name\t : "+ listMHs[pos].nama);
-            System.out.println("Umur\t : "+ listMHs[pos].umur);
-            System.out.println("IPK\t : "+ listMHs[pos].ipk);
-        } else {
-            System.out.println("data "+ x +"tidak ditemukan");
+    //modif
+    public void searchAllAndPrint(String nama) {
+        boolean found = false;
+        for (int i = 0; i < idx; i++) {
+            if (listMhs[i] != null && listMhs[i].nama.equalsIgnoreCase(nama)) {
+                if (!found) {
+                    found = true;
+                    System.out.println("Data ditemukan pada indeks:");
+                }
+                System.out.println(i);
+            }
+        }
+        if (!found) {
+            System.out.println("Data tidak ditemukan");
         }
     }
 }
