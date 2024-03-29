@@ -2,8 +2,9 @@ public class Sorting26Modif {
 
         public static void sequentialSearch(int[] arr, int key) {
             for (int i = 0; i < arr.length; i++) {
-                if (i == key) {
+                if (arr[i] == key) {
                     System.out.println("Data ditemukan pada indeks ke-" + i);
+                    return;
                 }
             }
             
@@ -16,10 +17,10 @@ public class Sorting26Modif {
             while (start <= end){
                 int mid = start + (end - start) / 2;
     
-                if (arr[mid] < key){
+                if (arr[mid] == key){
                     return mid;
                 }
-                if (arr[mid] == key){
+                if (arr[mid] < key){
                     start = mid + 1;
                 } else {
                     end = mid - 1;
